@@ -26,7 +26,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'pg', groups: %w(production), require: false
 
 gem 'devise'
+gem 'devise-bootstrap-views'
 gem 'milia'
+gem 'twitter-bootstrap-rails'
+gem 'jquery-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
