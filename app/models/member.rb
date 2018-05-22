@@ -20,7 +20,6 @@ class Member < ApplicationRecord
     end
 
     return new_member
-      
   end
 
 end
