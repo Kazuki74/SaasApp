@@ -11,3 +11,11 @@
 // about supported directives.
 //
 //= require jquery
+//= require moment
+//= require bootstrap-datetimepicker
+
+$(function(){
+    $('.datepicker').datetimepicker({
+    	format: "YYYY/MM/DD"
+    });
+});
