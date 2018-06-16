@@ -1,31 +1,21 @@
-# frozen_string_literal: true
-
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # Devise will use the `secret_key_base` as its `secret_key`
+  # Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '97b34ebc3c0e8b0b65ce4153facbb02ef5c35e3656b9862f2bbf8d52eca4a6f24b5f3ad0fa9aebd5c75d67b3c6bbf2a4ec13f38ce11d70446a6daa02caffb312'
-  
-  # ==> Controller configuration
-  # Configure the parent class to the devise controllers.
-  # config.parent_controller = 'DeviseController'
+  # config.secret_key = '3f1e395029378c21d7e776320e60c111109b7879347535a9a1ad22df168ce70ce2d1a42d31a9084c7646d043257911cedd9523a1081962f1c0dde31dc2dd4a73'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = 'do-not-reply@example.com'
-  config.secret_key = 'e551e5ad444a3629afc26217f5fae5d51d538dd085b2a36e467ca4f74a8932e33b16ba07f9d9ad53ef8ca7b12fcb57d9a3b3116b55544f9eafeeca2c9676ac87'
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'Devise::Mailer'
-
-  # Configure the parent class responsible to send e-mails.
-  # config.parent_mailer = 'ActionMailer::Base'
 
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
@@ -97,31 +87,19 @@ Devise.setup do |config|
   # from the server. You can disable this option at your own risk.
   # config.clean_up_csrf_token_on_authentication = true
 
-  # When false, Devise will not attempt to reload routes on eager load.
-  # This can reduce the time taken to boot the app but if your application
-  # requires the Devise mappings to be loaded during boot time the application
-  # won't boot properly.
-  # config.reload_routes = true
-
   # ==> Configuration for :database_authenticatable
-  # For bcrypt, this is the cost for hashing the password and defaults to 11. If
-  # using other algorithms, it sets how many times you want the password to be hashed.
+  # For bcrypt, this is the cost for hashing the password and defaults to 10. If
+  # using other encryptors, it sets how many times you want the password re-encrypted.
   #
   # Limiting the stretches to just one in testing will increase the performance of
   # your test suite dramatically. However, it is STRONGLY RECOMMENDED to not use
   # a value less than 10 in other environments. Note that, for bcrypt (the default
-  # algorithm), the cost increases exponentially with the number of stretches (e.g.
+  # encryptor), the cost increases exponentially with the number of stretches (e.g.
   # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
-  config.stretches = Rails.env.test? ? 1 : 11
+  config.stretches = Rails.env.test? ? 1 : 10
 
-  # Set up a pepper to generate the hashed password.
-  # config.pepper = 'e63ce91a50040371df4d596439d01ea62b8adc8b25c09b34d9e82246d2b1e31801191b3f5f915162cf605000d1956a70e0b003c6f139b8985d768710e98c21da'
-
-  # Send a notification to the original email when the user's email is changed.
-  # config.send_email_changed_notification = false
-
-  # Send a notification email when the user's password is changed.
-  # config.send_password_change_notification = false
+  # Setup a pepper to generate the encrypted password.
+  # config.pepper = '73154057171e0d6f9db50624ae84538e17f6fe42c41d7b624eaa0e1dae9d4947d5659b11a15bf45d883f3559b3fd59865b6b4f1853a597b6be7acd64dd68eb1b'
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -164,12 +142,12 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 6..128
+  config.password_length = 8..72
 
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
-  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  # config.email_regexp = /\A[^@]+@[^@]+\z/
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
@@ -217,11 +195,11 @@ Devise.setup do |config|
   # config.sign_in_after_reset_password = true
 
   # ==> Configuration for :encryptable
-  # Allow you to use another hashing or encryption algorithm besides bcrypt (default).
-  # You can use :sha1, :sha512 or algorithms from others authentication tools as
-  # :clearance_sha1, :authlogic_sha512 (then you should set stretches above to 20
-  # for default behavior) and :restful_authentication_sha1 (then you should set
-  # stretches to 10, and copy REST_AUTH_SITE_KEY to pepper).
+  # Allow you to use another encryption algorithm besides bcrypt (default). You can use
+  # :sha1, :sha512 or encryptors from others authentication tools as :clearance_sha1,
+  # :authlogic_sha512 (then you should set stretches above to 20 for default behavior)
+  # and :restful_authentication_sha1 (then you should set stretches to 10, and copy
+  # REST_AUTH_SITE_KEY to pepper).
   #
   # Require the `devise-encryptable` gem when using anything other than bcrypt
   # config.encryptor = :sha512

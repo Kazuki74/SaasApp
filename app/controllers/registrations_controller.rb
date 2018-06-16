@@ -15,7 +15,7 @@ class RegistrationsController < Milia::RegistrationsController
       # have a working copy of the params in case Tenant callbacks
       # make any changes
     tenant_params = sign_up_params_tenant
-    user_params   = sign_up_params_user
+    user_params   = sign_up_params_user.merge({ is_admin: true })
     coupon_params = sign_up_params_coupon
 
     sign_out_session!
@@ -25,18 +25,19 @@ class RegistrationsController < Milia::RegistrationsController
        # validate recaptcha first unless not enabled
     if !::Milia.use_recaptcha  ||  verify_recaptcha
 
-      Tenant.transaction  do
-        @tenant = Tenant.create_new_tenant(tenant_params, user_params, coupon_params)
+      Tenant.transaction  do 
+        @tenant = Tenant.create_new_tenant( tenant_params, user_params, coupon_params)
         if @tenant.errors.empty?   # tenant created
           if @tenant.plan == 'premium'
             @payment = Payment.new({ email: user_params["email"],
               token: params[:payment]["token"],
               tenant: @tenant })
             flash[:error] = "Please check registration errors" unless @payment.valid?
+            
             begin
               @payment.process_payment
               @payment.save
-            rescue Exception => e
+            rescue Exception => e 
               flash[:error] = e.message
               @tenant.destroy
               log_action("Payment failed")
@@ -88,6 +89,12 @@ class RegistrationsController < Milia::RegistrationsController
 
   # ------------------------------------------------------------------------------
   # ------------------------------------------------------------------------------
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_up) + ::Milia.whitelist_user_params
+    end
+
+  # ------------------------------------------------------------------------------
+  # ------------------------------------------------------------------------------
     def sign_up_params_tenant()
       params.require(:tenant).permit( ::Milia.whitelist_tenant_params )
     end
@@ -95,14 +102,14 @@ class RegistrationsController < Milia::RegistrationsController
   # ------------------------------------------------------------------------------
   # ------------------------------------------------------------------------------
     def sign_up_params_user()
-      devise_parameter_sanitizer.sanitize(:sign_up)
+      params.require(:user).permit( ::Milia.whitelist_user_params )
     end
 
   # ------------------------------------------------------------------------------
   # sign_up_params_coupon -- permit coupon parameter if used; else params
   # ------------------------------------------------------------------------------
     def sign_up_params_coupon()
-      ( ::Milia.use_coupon ?
+      ( ::Milia.use_coupon ? 
         params.require(:coupon).permit( ::Milia.whitelist_coupon_params )  :
         params
       )
@@ -144,7 +151,7 @@ class RegistrationsController < Milia::RegistrationsController
       else
         clean_up_passwords resource
         log_action( "devise: signup user failure", resource )
-        prep_signup_view(  @tenant, resource, params[:coupon] )
+        prep_signup_view(  @tenant, resource, params[:coupon] )   
         respond_with resource
       end
     end

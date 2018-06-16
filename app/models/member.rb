@@ -1,4 +1,4 @@
-class Member < ApplicationRecord
+class Member < ActiveRecord::Base
    
   belongs_to :user
   acts_as_tenant
@@ -20,6 +20,7 @@ class Member < ApplicationRecord
     end
 
     return new_member
+      
   end
 
 end

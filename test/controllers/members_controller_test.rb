@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MembersControllerTest < ActionDispatch::IntegrationTest
+class MembersControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end
