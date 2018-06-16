@@ -35,4 +35,9 @@ module ApplicationHelper
   def s3_link(tenant_id, artifacr_key)
     link_to artifacr_key, "#{artifacr_key}", class: "main-link", target: 'new'
   end
+
+  def class_name_for_tenant_form(tenant)
+    return "cc_form" if tenant.payment.blank?
+    ""
+  end
 end
